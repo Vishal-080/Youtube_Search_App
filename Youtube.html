@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube</title>
+    <link
+      rel="shortcut icon"
+      href="https://www.youtube.com/s/desktop/aa517dff/img/favicon.ico"
+      type="image/x-icon"
+    />
+    <style>
+      #container {
+        /* display:flex; */
+        font-family: "Roboto", sans-serif;
+      }
+      #side_row {
+        width: 5%;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+      }
+      #side_row > div {
+        margin: 15px auto;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      #navbar {
+        background-color: white;
+        height: 40px;
+        width: 100%;
+        display: flex;
+        padding: 10px;
+        padding-top: 0;
+        align-items: center;
+      }
+      #logo {
+        margin: 0 80px 0 15px;
+      }
+
+      #y_icon {
+        color: red;
+        margin: 0 15px;
+        margin-right: 0;
+        align-items: center;
+      }
+      #search_bar {
+        width: 45%;
+        margin-left: 60px;
+        margin-right: 20px;
+        text-align: center;
+        align-items: center;
+      }
+
+      #input {
+        width: 75%;
+        line-height: 25px;
+        margin-right: 0;
+      }
+
+      #search {
+        width: 10%;
+        line-height: 25px;
+        margin-left: 0;
+      }
+
+      #option {
+        width: 5%;
+        margin-right: 0;
+        margin-left: 350px;
+        align-items: center;
+      }
+
+      #sd_1 {
+        float: left;
+        margin-right: 50px;
+      }
+      #main_content {
+        margin: 15px auto;
+        width: 90%;
+        margin-left: 80px;
+      }
+      #main_div {
+        display: grid;
+        grid-template-columns: 33% 32% 33%;
+        grid-gap: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <nav id="navbar">
+        <div id="logo">
+          <!-- <img src="https://bit.ly/3kThopw"/> -->
+          <ion-icon id="y_icon" name="logo-youtube"></ion-icon>
+          <span>YouTube</span>
+        </div>
+        <div id="search_bar">
+          <input type="text" id="input" placeholder="Enter here..." />
+          <button onclick="youtubeSearch()" id="search">
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+          <ion-icon id="mic" name="mic-sharp"></ion-icon>
+        </div>
+        <div id="option">
+          <ion-icon name="apps-sharp"></ion-icon>
+          <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+        </div>
+      </nav>
+      <div id="main_content">
+        <div id="main_div"></div>
+      </div>
+    </div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
+
+<script>
+  var main_div = document.getElementById("main_div");
+  async function youtubeSearch() {
+    main_div.innerHTML = "";
+    let input = document.getElementById("input").value;
+    let res = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/search?q=${input}&type=video&key=AIzaSyDx9uDNrXDdFSZbDYNenVZuiCCuDTfjilk&maxResults=21`
+    );
+    let data = await res.json();
+
+    for ({
+      id: { videoId },
+    } of data.items) {
+      let display_video = document.createElement("iframe");
+      display_video.src = `https://www.youtube.com/embed/${videoId}`;
+      display_video.allow = "fullscreen";
+      display_video.style.border = "2px solid orange";
+      main_div.append(display_video);
+    }
+
+    input = document.getElementById("input").value = "";
+
+    //console.log ("data:",data);
+  }
+</script>
