@@ -127,6 +127,7 @@
 
 <script>
   var main_div = document.getElementById("main_div");
+
   async function youtubeSearch() {
     main_div.innerHTML = "";
     let input = document.getElementById("input").value;
@@ -149,4 +150,22 @@
 
     //console.log ("data:",data);
   }
+
+  async function mostPopular(){
+      main_div.innerHTML="";
+    let res = await fetch ("https://youtube.googleapis.com/youtube/v3/search?part=snippet&chart=mostPopular&regionCode=IN&type=video&key=AIzaSyDx9uDNrXDdFSZbDYNenVZuiCCuDTfjilk&maxResults=21");
+    let data= await res.json();
+    for ({id: { videoId },
+    } of data.items) {
+      let display_video = document.createElement("iframe");
+      display_video.src = `https://www.youtube.com/embed/${videoId}`;
+      display_video.allow = "fullscreen";
+      display_video.style.border = "2px solid orange";
+      main_div.append(display_video);
+    }
+
+  }
+
+  mostPopular();
+
 </script>
